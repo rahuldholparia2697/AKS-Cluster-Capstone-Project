@@ -57,4 +57,5 @@ module "monitoring" {
   resource_group_name       = module.rg.name
   aks_cluster_id            = module.aks.id
   aks_identity_principal_id = module.aks.aks_identity_principal_id
+  depends_on                = [module.aks]
 }
