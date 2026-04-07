@@ -2,6 +2,7 @@ name: 'AKS Deployment Pipeline'
 
 on:
   push:
+    branches: ['master']
     paths:
       - 'AKS-Cluster-Deployment/**'
 
