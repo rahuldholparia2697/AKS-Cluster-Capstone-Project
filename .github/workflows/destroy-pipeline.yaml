@@ -33,8 +33,13 @@ jobs:
           tenant-id: ${{ env.ARM_TENANT_ID }}
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
+      - name: Install unzip
+        run: sudo apt update && sudo apt install unzip
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '4.58.0'
 
       - name: Terraform Init
         run: terraform init
