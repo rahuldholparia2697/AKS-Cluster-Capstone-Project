@@ -3,8 +3,8 @@ name: 'AKS Deployment Pipeline'
 on:
   push:
     branches: ['master']
-    paths:
-      - 'AKS-Cluster-Deployment/**'
+    # paths:
+    #   - 'AKS-Cluster-Deployment/**'
 
 env:
   ARM_USE_MSI: true
