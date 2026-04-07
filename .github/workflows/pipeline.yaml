@@ -1,0 +1,79 @@
+name: 'AKS Deployment Pipeline'
+
+on:
+  push:
+    paths:
+      - 'AKS-Cluster-Deployment/**'
+
+env:
+  ARM_USE_MSI: true
+  ARM_SUBSCRIPTION_ID: 'b786f7c3-60f5-4584-ada7-b5d56c7d64fa'
+  ARM_TENANT_ID: 'b596b51c-3743-4440-8658-e5645145566c'
+
+defaults:
+  run:
+    working-directory: ./AKS-Cluster-Deployment
+
+jobs:
+  plan:
+    name: 'Terraform Plan'
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          # Uses the VM's system-assigned identity to login
+          auth-type: IDENTITY
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out="plan.tfplan"
+
+      - name: Upload Plan Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: ./plan.tfplan
+
+  apply:
+    runs-on: self-hosted
+    needs: plan
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          # Uses the VM's system-assigned identity to login
+          auth-type: IDENTITY
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Download Plan Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan
+          path: ./AKS-Cluster-Deployment
+
+      - name: Terraform Apply
+        run: terraform apply plan.tfplan
