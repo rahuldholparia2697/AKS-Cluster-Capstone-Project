@@ -61,7 +61,7 @@ jobs:
 
       - name: Login to ACR
         run: |
-          az acr login --name acraksp12345
+          az acr login --name acraksp12345 --expose-token
 
       - name: Set image tag
         id: vars
