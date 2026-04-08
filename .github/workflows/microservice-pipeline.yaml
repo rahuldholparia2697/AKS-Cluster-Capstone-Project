@@ -3,8 +3,8 @@ name: 'Build and push docker image to ACR'
 on:
   push:
     branches: ['master']
-    paths:
-      - 'E-Commerce-Web-App/src/product-catalog/**'
+    # paths:
+    #   - 'E-Commerce-Web-App/src/product-catalog/**'
 
 env:
   ARM_USE_MSI: true
