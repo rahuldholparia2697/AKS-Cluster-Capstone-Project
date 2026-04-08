@@ -1,4 +1,4 @@
-name: 'Build and push docker image to ACR'
+name: 'Build and push docker image to ACR USING PE'
 
 on:
   push:
