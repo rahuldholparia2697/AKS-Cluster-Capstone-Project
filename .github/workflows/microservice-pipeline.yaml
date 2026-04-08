@@ -38,6 +38,9 @@ jobs:
           tenant-id: ${{ env.ARM_TENANT_ID }}
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
+
       - name: Login to ACR
         run: |
           az acr login --name acraksp12345
