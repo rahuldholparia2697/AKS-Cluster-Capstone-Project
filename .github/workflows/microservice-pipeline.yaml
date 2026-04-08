@@ -1,0 +1,54 @@
+name: 'Build and push docker image to ACR'
+
+on:
+  push:
+    branches: ['master']
+    paths:
+      - 'E-Commerce-Web-App/src/product-catalog/**'
+
+env:
+  ARM_USE_MSI: true
+  ARM_SUBSCRIPTION_ID: 'b786f7c3-60f5-4584-ada7-b5d56c7d64fa'
+  ARM_TENANT_ID: 'b596b51c-3743-4440-8658-e5645145566c'
+  ACR_NAME: 'acraksp12345'
+  MICROSERVICE_NAME: 'product-catalog'
+
+defaults:
+  run:
+    working-directory: ./E-Commerce-Web-App/src/product-catalog/
+
+jobs:
+  plan:
+    name: 'Docker build and push'
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Azure CLI
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          # Uses the VM's system-assigned identity to login
+          auth-type: IDENTITY
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR
+        run: |
+          az acr login --name acraksp12345
+
+      - name: Set image tag
+        id: vars
+        run: |
+          IMAGE_TAG=${GITHUB_SHA::7}
+          echo "tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Build Docker and push image
+        run: |
+          docker build -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.MICROSERVICE_NAME }}:${{ steps.vars.outputs.tag }} .
+          docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.MICROSERVICE_NAME }}:${{ steps.vars.outputs.tag }}
