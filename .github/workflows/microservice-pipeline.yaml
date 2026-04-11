@@ -86,6 +86,8 @@ jobs:
           # Set the repository URL
           REPO_URL="https://${GITHUB_TOKEN}@github.com/rahuldholparia2697/AKS-Cluster-Capstone-Project"
 
+          rm -rf /tmp/temp_repo
+
           # Clone the git repository into the /tmp directory
           git clone "$REPO_URL" /tmp/temp_repo
 
