@@ -2,8 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: minimal-ingress
-  annotations:
-    appgw.ingress.kubernetes.io/backend-path-prefix: '/'
+  # annotations:
+  #   appgw.ingress.kubernetes.io/backend-path-prefix: '/'
 spec:
   ingressClassName: azure-application-gateway
   rules:
