@@ -38,8 +38,6 @@ jobs:
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
       - name: Docker installation
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
         run: |
           sudo apt update
           sudo apt install ca-certificates curl
@@ -78,6 +76,8 @@ jobs:
           docker push acraksp12345.azurecr.io/product-catalog:${{ steps.vars.outputs.tag }}
 
       - name: updating kubernetes manifest files
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
         run: |
           #!/bin/bash
 
