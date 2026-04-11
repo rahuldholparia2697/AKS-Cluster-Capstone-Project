@@ -11,8 +11,6 @@ env:
   ARM_USE_MSI: true
   ARM_SUBSCRIPTION_ID: 'b786f7c3-60f5-4584-ada7-b5d56c7d64fa'
   ARM_TENANT_ID: 'b596b51c-3743-4440-8658-e5645145566c'
-  ACR_NAME: 'acraksp12345'
-  MICROSERVICE_NAME: 'product-catalog'
 
 defaults:
   run:
@@ -40,6 +38,8 @@ jobs:
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
       - name: Docker installation
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
         run: |
           sudo apt update
           sudo apt install ca-certificates curl
@@ -84,7 +84,7 @@ jobs:
           set -x
 
           # Set the repository URL
-          REPO_URL="https://github.com/rahuldholparia2697/AKS-Cluster-Capstone-Project"
+          REPO_URL="https://${GITHUB_TOKEN}@github.com/rahuldholparia2697/AKS-Cluster-Capstone-Project"
 
           # Clone the git repository into the /tmp directory
           git clone "$REPO_URL" /tmp/temp_repo
