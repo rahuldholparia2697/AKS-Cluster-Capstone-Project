@@ -1,10 +1,11 @@
 name: 'Build and push docker image to ACR USING PE'
 
 on:
-  push:
-    branches: ['master']
-    # paths:
-    #   - 'E-Commerce-Web-App/src/product-catalog/**'
+  workflow_dispatch:
+  # push:
+  #   branches: ['master']
+  #   paths:
+  #     - 'E-Commerce-Web-App/src/product-catalog/**'
 
 env:
   ARM_USE_MSI: true
@@ -61,9 +62,9 @@ jobs:
 
           sudo usermod -aG docker $USER
 
-      - name: Login to ACR
-        run: |
-          az acr login --name acraksp12345 --expose-token
+      # - name: Login to ACR
+      #   run: |
+      #     az acr login --name acraksp12345 --expose-token
 
       - name: Set image tag
         id: vars
