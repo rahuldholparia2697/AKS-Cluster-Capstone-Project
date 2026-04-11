@@ -62,9 +62,9 @@ jobs:
 
           sudo usermod -aG docker $USER
 
-      # - name: Login to ACR
-      #   run: |
-      #     az acr login --name acraksp12345 --expose-token
+      - name: Login to ACR
+        run: |
+          az acr login --name acraksp12345
 
       - name: Set image tag
         id: vars
