@@ -9,3 +9,7 @@ output "private_endpoint_subnet_id" {
 output "agic_subnet_id" {
   value = azurerm_subnet.agic.id
 }
+
+output "vnet_id" {
+  value = azurerm_virtual_network.VNET.id
+}

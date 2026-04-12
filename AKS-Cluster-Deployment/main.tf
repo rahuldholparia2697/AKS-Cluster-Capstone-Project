@@ -22,6 +22,7 @@ module "acr" {
   location                   = module.rg.location
   resource_group_name        = module.rg.name
   private_endpoint_subnet_id = module.network.private_endpoint_subnet_id
+  vnet_id                    = module.network.vnet_id
 }
 
 module "aks" {

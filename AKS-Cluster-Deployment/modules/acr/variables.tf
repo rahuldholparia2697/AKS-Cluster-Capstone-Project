@@ -13,3 +13,7 @@ variable "resource_group_name" {
 variable "private_endpoint_subnet_id" {
   type = string
 }
+
+variable "vnet_id" {
+  type = string
+}
